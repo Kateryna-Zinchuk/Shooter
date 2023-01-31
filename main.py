@@ -49,7 +49,7 @@ class Player(GameSprite):
         pass
 
 
-player = Player("rocket.png", 300, 400, 70, 70, 5)
+player = Player("rocket.png", 300, 400, 100, 100, 5)
 
 game = True
 play = True
