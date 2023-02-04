@@ -1,5 +1,6 @@
 import pygame
 import os
+from random import randint
 pygame.init()
 
 def file_path(file_name):
@@ -48,8 +49,24 @@ class Player(GameSprite):
     def fire(self):
         pass
 
+class Enemy(GameSprite):
+    def __init__(self, image, x, y, width, height, speed):
+        super().__init__(image, x, y, width, height, speed)
+    
+    def update(self):
+        self.rect.y += self.speed
+        if self.rect.y >= WIN_HEIGHT:
+            self.rect.bottom = 0
+            self.rect.x = randint(0, WIN_WIDTH - self.rect.width)
+  
 
 player = Player("rocket.png", 300, 400, 100, 100, 5)
+enemies = pygame.sprite.Group()
+
+for i in range(5):
+    enemy = Enemy(file_path("asteroid.png"), randint(0, WIN_WIDTH - 50), 0, 50, 50, 2)
+    enemies.add(enemy)
+
 
 game = True
 play = True
@@ -63,6 +80,9 @@ while game == True:
 
     player.reset()
     player.update()
+
+    enemies.draw(window)
+    enemies.update()
 
     clock.tick(FPS)        
     pygame.display.update()
