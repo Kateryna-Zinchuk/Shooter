@@ -22,6 +22,15 @@ pygame.mixer.music.load(file_path("main.wav"))
 pygame.mixer.music.set_volume(0.4)
 pygame.mixer.music.play(-1)
 
+music_win = pygame.mixer.Sound(file_path("win.wav"))
+music_win.set_volume(0.4)
+
+music_lose = pygame.mixer.Sound(file_path("lose.wav"))
+music_lose.set_volume(0.4)
+
+music_shoot = pygame.mixer.Sound(file_path("shoot.wav"))
+music_shoot.set_volume(0.4)
+
 window = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
 clock = pygame.time.Clock()
 
@@ -53,6 +62,7 @@ class Player(GameSprite):
     def fire(self):
         bullet = Bullet(file_path("bullet.png"), self.rect.centerx, self.rect.top, 10, 10, 4)
         bullets.add(bullet)
+
 
 class Bullet(GameSprite):
     def __init__(self, image, x, y, width, height, speed):
@@ -103,6 +113,7 @@ while game == True:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 player.fire()
+                music_shoot.play()
 
     window.blit(fon, (0, 0))
 
@@ -134,12 +145,17 @@ while game == True:
             font2 = pygame.font.SysFont("arial", 60, 1, 0)
             txt_lose = font2.render("YOU LOST!", True, RED)
             window.blit(txt_lose, (250, 200))
+            pygame.mixer.music.stop()
+            music_lose.play()
 
     if killed_enemies >= 10:
         play = True
         font2 = pygame.font.SysFont("arial", 60, 1, 0)
         txt_win = font2.render("YOU WON!", True, GREEN)
         window.blit(txt_win, (250, 200))
+        pygame.mixer.music.stop()
+        music_win.play()
+
 
     clock.tick(FPS)        
     pygame.display.update()
